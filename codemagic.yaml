@@ -1,18 +1,19 @@
 workflows:
   ios-build:
-    name: Build para 3uTools
-    max_build_duration: 60
+    name: Build Forçado 3uTools
     instance_type: mac_mini_m2
     scripts:
-      - name: Build para Simulador
+      - name: Build
         script: |
           xcodebuild build \
             -workspace "SR Software.xcworkspace" \
             -scheme "SR Software" \
             -configuration Release \
-            -sdk iphonesimulator \
+            -sdk iphoneos \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" \
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            -allowProvisioningUpdates
     artifacts:
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/Release-iphonesimulator/*.app
+      - build/ios/iphoneos/*.app
