@@ -1,22 +1,23 @@
 workflows:
   ios-build:
-    name: Build iOS Final
+    name: Build para 3uTools
     max_build_duration: 60
     instance_type: mac_mini_m2
     scripts:
-      - name: Build App
+      - name: Build Executável
         script: |
-          # Procura o workspace automaticamente
-          WORKSPACE=$(find . -name "*.xcworkspace" | head -n 1)
-          SCHEME="SR Software"
+          # Limpa builds antigos
+          xcodebuild clean -workspace "SR Software.xcworkspace" -scheme "SR Software"
           
+          # Gera o arquivo .app sem precisar de assinatura ou certificados
           xcodebuild build \
-            -workspace "$WORKSPACE" \
-            -scheme "$SCHEME" \
+            -workspace "SR Software.xcworkspace" \
+            -scheme "SR Software" \
             -configuration Release \
             -sdk iphoneos \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES
     artifacts:
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/Products/Release-iphoneos/*.app
